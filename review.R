@@ -34,11 +34,11 @@ analyze <- function(data) {
 
 # plot results
 plot_results <- function(results, title_text){
-  ggplot(results, aes(x=versus, y=method, fill=100*count/total, label = label))+
+  ggplot(results, aes(x=versus, y=method, fill=100*count/total, label = label, fontface = ifelse(diag, 2,1)))+
     geom_tile() +
     geom_text() +
     labs(x = "", y="", title = title_text) +
-    scale_fill_distiller(palette = "RdYlBu", name = "Performance \n(% studies \nrow > column)", na.value = "white") + #, low="white", high="darkgrey", na.value = "white") +
+    scale_fill_distiller(palette = "RdYlBu", name = "Performance \n(% studies \nin which \nmethod in \nrow > column)", na.value = "white") + #, low="white", high="darkgrey", na.value = "white") +
     theme_bw()
 }
 

@@ -1,0 +1,49 @@
+---
+title: "Literature review"
+author: "Hanne Oberman"
+date: "17-8-2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("./review.R")
+```
+
+# Introduction
+
+- missing data is problematic and inevitable when working with RWD in a clinical setting
+
+- there has been a shift from CCA to stats to ML methods to handle missing data
+
+- ML methods appear to be better suited for empirical data, where assumptions of CCA and stats methods do not hold
+
+- this review aims to summarize simulation studies into missing data methods
+
+# Methods
+
+- AI assisted reviewing, see Nature publication ASReview
+
+- literature search PubMed and ArXiv with inclusion criteria: missing/incomplete, simulation, ...
+
+- manual selection of 15 relevant articles for stopping criterion AI assisted reviewing
+
+- removed duplicates, start screening abstracts selected by ASReview
+
+- stop screening when 15 manually selected articles are 'found' by ASReview
+
+- screen full articles with inclusion criteria: missingness empirical/MAR/MNAR (not MCAR), ...
+
+- flow chart of methods presented in Figure:
+
+![Figure. Flow chart of review process](./flowchart.png)
+
+# Results
+
+- complete results presented in Figure:
+
+```{r results, echo=FALSE, fig.dim=c(16,9), message=FALSE, warning=FALSE}
+plot_results(results_full, "Comparison of missing data methods, MAR, MNAR and 'real' missingness")
+```
+
+
