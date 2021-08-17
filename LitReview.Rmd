@@ -45,5 +45,20 @@ source("./review.R")
 ```{r results, echo=FALSE, fig.dim=c(16,9), message=FALSE, warning=FALSE}
 plot_results(results_full, "Comparison of missing data methods, MAR, MNAR and 'real' missingness")
 ```
+- results for cross-sectional data
+
+```{r}
+results_MAR_cros
+results_MNAR_cros
+results_emp_cros
+```
+
+- results for longitudinal data
+
+```{r}
+results_MAR_long
+results_MNAR_long
+results_emp_long
+```
 
 

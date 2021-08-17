@@ -35,35 +35,81 @@ analyze <- function(data) {
 # plot results
 plot_results <- function(results, title_text){
   ggplot(results, aes(x=versus, y=method, fill=100*count/total, label = label, fontface = ifelse(diag, 2,1)))+
-    geom_tile() +
+    geom_raster() +
     geom_text() +
     labs(x = "", y="", title = title_text) +
     scale_fill_distiller(palette = "RdYlBu", name = "Performance \n(% studies \nin which \nmethod in \nrow > column)", na.value = "white") + #, low="white", high="darkgrey", na.value = "white") +
-    theme_bw()
+    theme_classic()
 }
 
 # for all studies combined
 results_full <-analyze(dat)
 plot_results(results_full, "Comparison of missing data methods, MAR, MNAR and 'real' missingness")
 
-# MAR only
-results_MAR <- dat %>% filter(MAR==1) %>% filter(is.na(longitudinal)) %>% analyze()
-plot_results(results_MAR, "Comparison of missing data methods, MAR missingness, cross-sectional data only")
+# # longitudinal only
+# results_long <- dat %>% 
+#   filter(longitudinal==1) %>% 
+#   analyze()
+# plot_results(results_long, "Comparison of missing data methods, all longitudinal data")
 
-# MNAR only
-results_MNAR <- dat %>% filter(MNAR==1) %>% filter(is.na(longitudinal)) %>% analyze()
-plot_results(results_MNAR, "Comparison of missing data methods, MNAR missingness, cross-sectional data only")
+# # cross-sectional only
+# results_cros <- dat %>% 
+#   filter(is.na(longitudinal)) %>% 
+#   analyze()
+# plot_results(results_cros, "Comparison of missing data methods, all cross-sectional data")
 
-# empirical only
-results_emp <- dat %>% filter(empirical==1) %>% 
+# MAR, cross-sectional only
+results_MAR_cros <- dat %>% filter(MAR==1) %>%
+  filter(is.na(longitudinal)) %>%
+  analyze() %>% 
+  plot_results("Comparison of missing data methods, MAR missingness, cross-sectional data only")
+results_MAR_cros
+
+# MNAR, cross-sectional only
+results_MNAR_cros <- dat %>% filter(MNAR==1) %>% 
   filter(is.na(longitudinal)) %>% 
-  analyze()
-plot_results(results_emp, "Comparison of missing data methods, empirical missingness only")
+  analyze() %>% 
+  plot_results("Comparison of missing data methods, MNAR missingness, cross-sectional data only")
+results_MNAR_cros
 
-# longitudinal only
-results_long <- dat %>% filter(longitudinal==1) %>% analyze()
-plot_results(results_long, "Comparison of missing data methods, longitudinal data only")
+# empirical cross-sectional only
+results_emp_cros <- dat %>% filter(empirical==1) %>% 
+  filter(is.na(longitudinal)) %>% 
+  analyze() %>% 
+  plot_results("Comparison of missing data methods, empirical missingness, cross-sectional data only")
+results_emp_cros
 
+# MAR longitudinal only
+results_MAR_long <- dat %>% filter(MAR==1) %>% 
+  filter(longitudinal==1) %>% 
+  analyze() %>% 
+  plot_results("Comparison of missing data methods, MAR missingness, longitudinal data only")
+results_MAR_long
+
+# MNAR longitudinal only
+results_MNAR_long <- dat %>% filter(MNAR==1) %>% 
+  filter(longitudinal==1) %>% 
+  analyze() %>% 
+  plot_results("Comparison of missing data methods, MNAR missingness, longitudinal data only")
+results_MNAR_long
+
+# empirical longitudinal only
+results_emp_long <- dat %>% filter(empirical==1) %>% 
+  filter(longitudinal==1) %>% 
+  analyze() %>% 
+  plot_results("Comparison of missing data methods, empirical missingness, longitudinal data only")
+results_emp_long
+
+
+# combine plots
+library(patchwork)
+excl_cros <- apply(dat[is.na(dat$longitudinal),-c(1:4)], 2, function(x){all(is.na(x))}) %>% c(rep(FALSE, 4),.)
+excl_long <- apply(dat[dat$longitudinal==1,-c(1:4)], 2, function(x){all(is.na(x))}) %>% c(rep(FALSE,4),.) #dat %>% filter(longitudinal==1) %>% colMeans(., na.rm=TRUE) == "NaN"
+
+# cross-sectional
+
+# longitudinal
+results_emp_long + scale_y_discrete(limits = rev(names(dat)[!excl_long]))
 
 # OLD CODE
 # results <- purrr::map_dfr(1:15, function(x){
