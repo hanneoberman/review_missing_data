@@ -35,7 +35,7 @@ analyze <- function(data) {
 # plot results
 plot_results <- function(results, title_text){
   ggplot(results, aes(x=versus, y=method, fill=100*count/total, label = label, fontface = ifelse(diag, 2,1)))+
-    geom_raster() +
+    geom_tile() +
     geom_text() +
     labs(x = "", y="", title = title_text) +
     scale_fill_distiller(palette = "RdYlBu", name = "Performance \n(% studies \nin which \nmethod in \nrow > column)", na.value = "white") + #, low="white", high="darkgrey", na.value = "white") +
@@ -103,14 +103,20 @@ results_emp_long
 
 # combine plots
 library(patchwork)
-excl_cros <- apply(dat[is.na(dat$longitudinal),-c(1:4)], 2, function(x){all(is.na(x))}) %>% c(rep(FALSE, 4),.)
-excl_long <- apply(dat[dat$longitudinal==1,-c(1:4)], 2, function(x){all(is.na(x))}) %>% c(rep(FALSE,4),.) #dat %>% filter(longitudinal==1) %>% colMeans(., na.rm=TRUE) == "NaN"
+excl_cros <- apply(dat[is.na(dat$longitudinal),-c(1:4)], 2, function(x){all(is.na(x))}) %>% c(rep(TRUE, 4),.)
+excl_long <- apply(dat[dat$longitudinal==1,-c(1:4)], 2, function(x){all(is.na(x))}) %>% c(rep(TRUE,4),.) #dat %>% filter(longitudinal==1) %>% colMeans(., na.rm=TRUE) == "NaN"
 
 # cross-sectional
+(results_MAR_cros + scale_y_discrete(limits = rev(names(dat)[!excl_cros]))) +
+  (results_MNAR_cros + scale_y_discrete(limits = rev(names(dat)[!excl_cros]))) +
+  (results_emp_cros + scale_y_discrete(limits = rev(names(dat)[!excl_cros]))) +
+  plot_layout(guides = 'collect')
 
 # longitudinal
-results_emp_long + scale_y_discrete(limits = rev(names(dat)[!excl_long]))
-
+(results_MAR_long + scale_y_discrete(limits = rev(names(dat)[!excl_long]))) +
+(results_MNAR_long + scale_y_discrete(limits = rev(names(dat)[!excl_long]))) +
+(results_emp_long + scale_y_discrete(limits = rev(names(dat)[!excl_long]))) +
+  plot_layout(guides = 'collect')
 # OLD CODE
 # results <- purrr::map_dfr(1:15, function(x){
 #   purrr::map_dfr(methods, function(y){

@@ -47,18 +47,20 @@ plot_results(results_full, "Comparison of missing data methods, MAR, MNAR and 'r
 ```
 - results for cross-sectional data
 
-```{r}
-results_MAR_cros
-results_MNAR_cros
-results_emp_cros
+```{r, fig.dim=c(16,9)}
+results_MAR_cros +
+results_MNAR_cros +
+results_emp_cros +
+    plot_layout(guides = 'collect')
 ```
 
 - results for longitudinal data
 
-```{r}
-results_MAR_long
-results_MNAR_long
-results_emp_long
+```{r, fig.dim=c(16,9)}
+results_MAR_long +
+results_MNAR_long +
+results_emp_long +
+    plot_layout(guides = 'collect')
 ```
 
 
