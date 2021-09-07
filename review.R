@@ -1,6 +1,6 @@
 # lit review
 library(tidyverse)
-dat <- readxl::read_excel("./asreview_result_clinical-applications-of-ai.xlsx", sheet = "Export", na = "0")
+dat <- readxl::read_excel("./asreview_result_clinical-applications-of-ai.xlsx", sheet = "Export", na = "0") #%>% select(-RNN)
 
 # analyze data
 analyze <- function(data) {
@@ -79,6 +79,13 @@ results_emp_cros <- dat %>% filter(empirical==1) %>%
   plot_results("Comparison of missing data methods, empirical missingness, cross-sectional data only")
 results_emp_cros
 
+# all cross-sectional
+results_all_cros <- dat %>% 
+  filter(is.na(longitudinal)) %>% 
+  analyze() %>% 
+  plot_results("Comparison of missing data methods, cross-sectional data only")
+results_all_cros
+
 # MAR longitudinal only
 results_MAR_long <- dat %>% filter(MAR==1) %>% 
   filter(longitudinal==1) %>% 
@@ -99,6 +106,13 @@ results_emp_long <- dat %>% filter(empirical==1) %>%
   analyze() %>% 
   plot_results("Comparison of missing data methods, empirical missingness, longitudinal data only")
 results_emp_long
+
+# all longitudinal
+results_all_long <- dat %>% 
+  filter(longitudinal==1) %>% 
+  analyze() %>% 
+  plot_results("Comparison of missing data methods, longitudinal data only")
+results_all_long
 
 
 # combine plots
