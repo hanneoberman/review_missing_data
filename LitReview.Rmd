@@ -3,14 +3,14 @@ title: "Literature review"
 author: "Hanne Oberman"
 date: "17-8-2021"
 output:
-  pdf_document: default
-  html_document: default
   word_document: default
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-source("./review.R")
+source("./review_functions.R")
 ```
 
 # Literature review
@@ -25,7 +25,7 @@ Briefly, we searched relevant publications on PubMed and ArXiv that describe qua
 
 - Exclusion criteria during full text screening (all of the above, plus): the paper only concerns two missing data methods, one of which is complete case analysis; the paper only concerns single-patient data; the paper only concerns a MCAR missingness mechanism (equivalently, the paper does not concern MAR, MNAR or empirical missingness mechanisms).
 
-![Figure. Flow diagram of review methods.](./diagram.pdf)
+![Figure. Flow diagram of review methods.](./Figures/diagram.pdf)
 
 
 
@@ -50,7 +50,7 @@ After omitting duplicates and removing papers that did not meet the inclusion cr
 
 Results from the simulation studies reported in the 67 papers are summarized in Figure [...]. Each row in this figure represents one method of accommodating missing data, in order of appearance in this chapter (i.e., single imputation methods, multiple imputation methods, non-parametric imputation methods, non-imputation methods, and specialized methods for MNAR and longitudinal datatypes). The cells in Figure [...] display the number of papers in which the method in the row outperforms the method in the column. Methods that work comparatively well have a higher percentage of papers in which they outperform other methods, signified by rows with many green cells. 
 
-![Figure. Literature review results.](./results_full.pdf)
+![Figure. Literature review results.](./Figures/results_full.pdf)
 **Note:** *percentage of papers in which the method in the row outperforms the method in the column. Abbreviations: SVI = single value imputation, EVI = expected value imputation, JMI = joint modeling imputation, CMI = conditional modeling imputation, nearest = nearest neighbors, matrix =  matrix factorization, tree-based = tree-based ensembles, SVM = support vector machines, generative = generative methods, CCA = complete case analysis, likelihood = likelihood-based methods, pattern = missing data pattern methods, HTI - Heckman-type imputation, interpolation = interpolation methods (incl. last observation carried forward), RNN = recurrent neural networks. \newline 
 
 Methods that appears to do well across the board are the cluster of generative methods (e.g., auto-encoders and convolution neural networks) and recurrent neural networks. Support vector machines also outperform all methods in comparison, but there is little information to base this conclusion on. As a general observation, the non-parametric methods perform comparatively better than the statistical imputation methods or non-imputation methods. Non-parametric methods may, however, not be suited for inference purposes--then, CMI or missing data pattern methods may be preferred.
