@@ -1,11 +1,21 @@
 # lit review
 library(tidyverse)
+
+# full results
 dat <-
   readxl::read_excel(
     "./asreview_result_clinical-applications-of-ai.xlsx",
     sheet = "Export",
     na = "0"
-  ) #%>% select(-RNN)
+  ) 
+
+# aggregated methods
+dat2 <-
+  readxl::read_excel(
+    "./asreview_result_clinical-applications-of-ai.xlsx",
+    sheet = "Export2",
+    na = "0"
+  ) %>% filter(is.na(duplicate)) %>% select(-duplicate)
 
 # analyze data
 analyze <- function(data) {
@@ -50,7 +60,7 @@ plot_results <- function(results, title_text) {
     )
   ) +
     geom_tile() +
-    geom_text(size = ifelse(results$diag, 2.5, 4.5)) +
+    geom_text(size = 5) +#size = ifelse(results$diag, 2.5, 4.5)) +
     labs(x = "", y = "", title = title_text) +
     scale_fill_distiller(
       palette = "RdYlGn",
@@ -66,6 +76,10 @@ plot_results <- function(results, title_text) {
 results_full_data <- analyze(dat)
 results_all <- plot_results(results_full_data, "")
 results_all
+
+# aggregated methods
+results_aggregated <- analyze(dat2) %>% plot_results(., "")
+results_aggregated
 
 # # longitudinal only
 # results_long <- dat %>%
