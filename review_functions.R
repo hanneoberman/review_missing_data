@@ -7,7 +7,7 @@ dat <-
     "./asreview_result_clinical-applications-of-ai.xlsx",
     sheet = "Export",
     na = "0"
-  ) 
+  ) %>% filter(is.na(duplicate)) %>% select(-duplicate)
 
 # aggregated methods
 dat2 <-
@@ -60,7 +60,7 @@ plot_results <- function(results, title_text) {
     )
   ) +
     geom_tile() +
-    geom_text(size = 5) +#size = ifelse(results$diag, 2.5, 4.5)) +
+    geom_text(size = ifelse(results$diag, 3, 4.5)) +#size = ifelse(results$diag, 2.5, 4.5)) +
     labs(x = "", y = "", title = title_text) +
     scale_fill_distiller(
       palette = "RdYlGn",
